@@ -37,6 +37,8 @@ async function run() {
     const toysCollection = client.db('superHero').collection('toys');
     const transformerToys = client.db('superHero').collection('transformer');
 
+    const orderCollection = client.db('superHero').collection('order');
+
     app.get('/toys', async(req,res)=>{
         const cursor = toysCollection.find();
         const result = await cursor.toArray();
@@ -60,6 +62,15 @@ async function run() {
         const query = {_id: new ObjectId(id)}
         const result = await transformerToys.findOne(query);
         res.send(result)
+    })
+
+    //order
+    app.post('/orders', async(req,res)=>{
+        const orders = req.body;
+        console.log(orders);
+        const result = await orderCollection.insertOne(orders);
+        res.send(result);
+        
     })
 
     // Send a ping to confirm a successful connection
