@@ -65,12 +65,31 @@ async function run() {
     })
 
     //order
+
+    app.get('/orders', async(req,res)=>{
+        const result = await orderCollection.find().toArray();
+        res.send(result)
+    })
+
     app.post('/orders', async(req,res)=>{
         const orders = req.body;
         console.log(orders);
         const result = await orderCollection.insertOne(orders);
         res.send(result);
         
+    })
+    app.put('/orders/id', async(req,res)=>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const updateDetail = req.body;
+      console.log(updateDetail);
+      const update = {
+        $set:{
+          status: updateDetail.status
+        }
+      };
+      const result = await updateDetail.updateOne(filter,update);
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
